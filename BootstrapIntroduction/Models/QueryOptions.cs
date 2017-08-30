@@ -9,12 +9,17 @@ namespace BootstrapIntroduction.Models
     {
         public QueryOptions()
         {
+            PageSize = 1;
+            CurrentPage = 1;
             SortField = "Id";
             SortOrder = SortOrder.ASC;
         }
 
         public string SortField { get; set; }
         public SortOrder SortOrder{ get; set; }
+        public int CurrentPage { get; set; }
+        public int TotalPages { get; set; }
+        public int PageSize { get; set; }
 
         public string Sort {
             get {
