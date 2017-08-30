@@ -1,11 +1,12 @@
 ﻿@model BootstrapIntroduction.Models.Author
 
 @{
+    var isCreating = Model.Id == 0;
     ViewBag.Title = "Create";
 }
 
 <div data-bind="visible: !saveCompleted()">
-    <h2>Create</h2>
+    <h2>@ViewBag.Title</h2>
 
     @using (Html.BeginForm("Create", "Authors", FormMethod.Post, new { data_bind = "submit: validateAndSave" }))
     {
@@ -41,9 +42,16 @@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10" data-bind="visible: !sending()">
-                    <input type="submit" value="Create" class="btn btn-default" />
-                </div>
-                <div class="progress" data-bind="visible: sending">
+                    <input type="submit" value="@if (isCreating) {
+                                @Html.Raw("Create")
+                            } else {
+                                @Html.Raw("Update")
+                            } " class="btn btn-default" />
+                            </div>
+
+
+
+                            <div class="progress" data-bind="visible: sending">
                     <div class="progress-bar progress-bar-info progress-bar-striped active"
                          role="progressbar" aria-valuenow="100"
                          aria-valuemin="0" aria-valuemax="100"
@@ -62,7 +70,7 @@
 @section Scripts{
     @Scripts.Render("~/bundles/jqueryval", "/Scripts/ViewModels/AuthorFormViewModel.js")
     <script>
-        var viewModel = new AuthorFormViewModel();
+        var viewModel = new AuthorFormViewModel(@Html.HtmlConvertToJson(Model);
         ko.applyBindings(viewModel);
     </script>
 }
