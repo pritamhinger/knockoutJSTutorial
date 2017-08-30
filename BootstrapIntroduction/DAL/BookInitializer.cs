@@ -14,7 +14,7 @@ namespace BootstrapIntroduction.DAL
             //base.Seed(context);
             var author = new Author
             {
-                Biography = "...",
+                Biography = "abcd",
                 FirstName = "Jamie",
                 LastName = "Munro"
             };

@@ -18,7 +18,8 @@ namespace BootstrapIntroduction.Controllers
         // GET: Authors
         public ActionResult Index()
         {
-            return View(db.Authors.ToList());
+            var authors = db.Authors.ToList();
+            return View(authors);
         }
 
         // GET: Authors/Details/5
