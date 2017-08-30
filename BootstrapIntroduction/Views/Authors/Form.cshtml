@@ -2,7 +2,7 @@
 
 @{
     var isCreating = Model.Id == 0;
-    ViewBag.Title = "Create";
+    ViewBag.Title = (isCreating) ? "Create" : "Edit";
 }
 
 <div data-bind="visible: !saveCompleted()">
@@ -70,7 +70,7 @@
 @section Scripts{
     @Scripts.Render("~/bundles/jqueryval", "/Scripts/ViewModels/AuthorFormViewModel.js")
     <script>
-        var viewModel = new AuthorFormViewModel(@Html.HtmlConvertToJson(Model);
+        var viewModel = new AuthorFormViewModel(@Html.HtmlConvertToJson(Model));
         ko.applyBindings(viewModel);
     </script>
 }

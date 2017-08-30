@@ -23,7 +23,7 @@
                    class="btn btn-info">Details</a>
                 <a data-bind="attr: { href: '@Url.Action("Edit")/' + id }"
                    class="btn btn-primary">Edit</a>
-                <a data-bind="attr: { href: '@Url.Action("Delete")/' + id }"
+                <a data-bind="click: $parent.showDeleteModal, attr: { href: '@Url.Action("Delete")/' + id }"
                    class="btn btn-danger">Delete</a>
             </td>
         </tr>
@@ -32,13 +32,9 @@
 @Html.BuildNextPreviousLinks(queryOptions, "Index")
 
 @section Scripts{
+    @Scripts.Render("/Scripts/ViewModels/AuthorIndexViewModel.js")
     <script>
-        function ViewModel(authors) {
-            var self = this;
-            self.authors = authors;
-        };
-
-        var viewModel = new ViewModel(@Html.HtmlConvertToJson(Model));
+        var viewModel = new AuthorIndexViewModel(@Html.HtmlConvertToJson(Model));
         ko.applyBindings(viewModel);
     </script>
 }
