@@ -7,7 +7,7 @@ using System.Web;
 
 namespace BootstrapIntroduction.DAL
 {
-    public class BookInitializer : CreateDatabaseIfNotExists<BookContext>
+    public class BookInitializer : DropCreateDatabaseIfModelChanges<BookContext>
     {
         protected override void Seed(BookContext context)
         {
