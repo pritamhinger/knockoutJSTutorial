@@ -11,13 +11,14 @@ using BootstrapIntroduction.DAL;
 using BootstrapIntroduction.Models;
 using System.Web.ModelBinding;
 using BootstrapIntroduction.ViewModels;
+using AutoMapper;
 
 namespace BootstrapIntroduction.Controllers
 {
     public class AuthorsController : Controller
     {
         private BookContext db = new BookContext();
-
+        
         // GET: Authors
         public ActionResult Index([Form] QueryOptions queryOptions)
         {
@@ -25,7 +26,15 @@ namespace BootstrapIntroduction.Controllers
             var authors = db.Authors.OrderBy(queryOptions.Sort).Skip(start).Take(queryOptions.PageSize);
             queryOptions.TotalPages = (int)Math.Ceiling((double)db.Authors.Count() / queryOptions.PageSize);
             ViewBag.QueryOptions = queryOptions;
-            return View(authors.ToList());
+
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<Author, AuthorViewModel>();
+            });
+
+            var mapper = config.CreateMapper();
+
+            return View(mapper.Map<List<Author>, List<AuthorViewModel>>(authors.ToList()));
         }
 
         // GET: Authors/Details/5
@@ -46,7 +55,7 @@ namespace BootstrapIntroduction.Controllers
         // GET: Authors/Create
         public ActionResult Create()
         {
-            return View("Form", new Author());
+            return View("Form", new AuthorViewModel());
         }
 
         // POST: Authors/Create
@@ -54,11 +63,17 @@ namespace BootstrapIntroduction.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,FirstName,LastName,Biography")] Author author)
+        public ActionResult Create([Bind(Include = "Id,FirstName,LastName,Biography")] AuthorViewModel author)
         {
             if (ModelState.IsValid)
             {
-                db.Authors.Add(author);
+                var config = new MapperConfiguration(cfg =>
+                {
+                    cfg.CreateMap<AuthorViewModel, Author>();
+                });
+
+                var mapper = config.CreateMapper();
+                db.Authors.Add(mapper.Map<AuthorViewModel, Author>(author));
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -78,7 +93,14 @@ namespace BootstrapIntroduction.Controllers
             {
                 return HttpNotFound();
             }
-            return View("Form", author);
+
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<Author, AuthorViewModel>();
+            });
+
+            var mapper = config.CreateMapper();
+            return View("Form", mapper.Map<Author, AuthorViewModel>(author));
         }
 
         // POST: Authors/Edit/5
@@ -86,11 +108,18 @@ namespace BootstrapIntroduction.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,Biography")] Author author)
+        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,Biography")] AuthorViewModel author)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(author).State = EntityState.Modified;
+                var config = new MapperConfiguration(cfg =>
+                {
+                    cfg.CreateMap<AuthorViewModel, Author>();
+                });
+
+                var mapper = config.CreateMapper();
+
+                db.Entry(mapper.Map<AuthorViewModel, Author>(author)).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -109,7 +138,14 @@ namespace BootstrapIntroduction.Controllers
             {
                 return HttpNotFound();
             }
-            return View(author);
+
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<Author, AuthorViewModel>();
+            });
+
+            var mapper = config.CreateMapper();
+            return View(mapper.Map<Author, AuthorViewModel>(author));
         }
 
         // POST: Authors/Delete/5

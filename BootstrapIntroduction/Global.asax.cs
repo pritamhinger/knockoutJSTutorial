@@ -1,4 +1,7 @@
-﻿using BootstrapIntroduction.DAL;
+﻿using AutoMapper;
+using BootstrapIntroduction.DAL;
+using BootstrapIntroduction.Models;
+using BootstrapIntroduction.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -21,7 +24,7 @@ namespace BootstrapIntroduction
 
             var bookContext = new BookContext();
             Database.SetInitializer(new BookInitializer());
-            bookContext.Database.Initialize(true);
+            bookContext.Database.Initialize(true);           
         }
     }
 }
