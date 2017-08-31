@@ -165,7 +165,6 @@
     </Compile>
     <Compile Include="Models\Author.cs" />
     <Compile Include="Models\Book.cs" />
-    <Compile Include="Utility\AutomapperProfile.cs" />
     <Compile Include="ViewModels\AuthorViewModel.cs" />
     <Compile Include="ViewModels\Person.cs" />
     <Compile Include="ViewModels\QueryOptions.cs" />
