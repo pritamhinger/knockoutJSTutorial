@@ -25,8 +25,7 @@ namespace BootstrapIntroduction.Controllers
             var start = (queryOptions.CurrentPage - 1) * queryOptions.PageSize;
             var authors = db.Authors.OrderBy(queryOptions.Sort).Skip(start).Take(queryOptions.PageSize);
             queryOptions.TotalPages = (int)Math.Ceiling((double)db.Authors.Count() / queryOptions.PageSize);
-            ViewBag.QueryOptions = queryOptions;
-
+            
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Author, AuthorViewModel>();
@@ -34,7 +33,12 @@ namespace BootstrapIntroduction.Controllers
 
             var mapper = config.CreateMapper();
 
-            return View(mapper.Map<List<Author>, List<AuthorViewModel>>(authors.ToList()));
+            //return View(mapper.Map<List<Author>, List<AuthorViewModel>>(authors.ToList()));
+            return View(new ResultList<AuthorViewModel>
+            {
+                QueryOptions = queryOptions,
+                Results = mapper.Map<List<Author>, List<AuthorViewModel>>(authors.ToList())
+            });
         }
 
         // GET: Authors/Details/5
